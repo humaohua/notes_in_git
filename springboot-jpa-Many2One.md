@@ -294,5 +294,6 @@ Hibernate: select group0_.gid as gid1_0_0_, group0_.name as name2_0_0_ from t_gr
 2017-10-19 10:13:43.989  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : 
 2017-10-19 10:13:43.990  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : Started AddressJpaApplication in 10.533 seconds (JVM running for 11.185)
 
+
 ```
 
