@@ -278,4 +278,21 @@ public class AddressJpaApplication {
 
 ```
 
+# output info
+```
+ Hibernate: insert into t_group (name) values (?)
+Hibernate: insert into t_person (gid, mobile, name) values (?, ?, ?)
+2017-10-19 10:13:43.784  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : Persons found with findAll():
+2017-10-19 10:13:43.784  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : -------------------------------
+2017-10-19 10:13:43.818  INFO 12533 --- [           main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+Hibernate: select person0_.pid as pid1_1_, person0_.gid as gid4_1_, person0_.mobile as mobile2_1_, person0_.name as name3_1_ from t_person person0_
+Hibernate: select group0_.gid as gid1_0_0_, group0_.name as name2_0_0_ from t_group group0_ where group0_.gid=?
+2017-10-19 10:13:43.966  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : Person{pid=1, group=Group{gid=1, name='py'}, name='z3', mobile='13333333333'}
+Hibernate: select person0_.pid as pid1_1_, person0_.gid as gid4_1_, person0_.mobile as mobile2_1_, person0_.name as name3_1_ from t_person person0_ where person0_.name=?
+Hibernate: select group0_.gid as gid1_0_0_, group0_.name as name2_0_0_ from t_group group0_ where group0_.gid=?
+2017-10-19 10:13:43.989  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : [Person{pid=1, group=Group{gid=1, name='py'}, name='z3', mobile='13333333333'}]
+2017-10-19 10:13:43.989  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : 
+2017-10-19 10:13:43.990  INFO 12533 --- [           main] c.m.s.address.AddressJpaApplication      : Started AddressJpaApplication in 10.533 seconds (JVM running for 11.185)
+
+```
 
