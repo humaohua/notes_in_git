@@ -142,3 +142,51 @@ model.addAttribute("books", readingList); model.addAttribute("reader", reader); 
     return "redirect:/";
 } }
 ```
+
+### application.yml
+```
+spring:
+      datasource:
+        url: jdbc:mysql://localhost/readinglist
+        username: dbuser
+        password: dbpass
+        driver-class-name: com.mysql.jdbc.Driver # 一般可以根据url自动识别
+```
+
+### 使用命令参数 或 配置文件 激活Profile
+```
+$ java -jar readinglist-0.0.1-SNAPSHOT.jar --
+         spring.profiles.active=production
+
+spring:
+      profiles:
+        active: production
+```
+
+### 1. 使用特定于Profile的属性文件
+```
+application.properties  #common
+application-development.properties #cfg in dev
+application-production.properties #cfg in prod
+激活其中的一个配置文件
+```
+### 2. 使用多Profile YAML文件进行配置
+```
+logging:
+  level:
+    root: INFO
+---
+spring:
+  profiles: development
+logging:
+  level:
+    root: DEBUG
+---
+spring:
+  profiles: production
+logging:
+  path: /tmp/
+  file: BookWorm.log
+  level:
+root: WARN
+```
