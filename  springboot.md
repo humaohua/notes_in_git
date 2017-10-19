@@ -45,3 +45,100 @@ MAVEN 排除传递性依赖
     </dependency>
 Maven总是会用最近的依赖，也就是说，你在项目的构建说明文件里增加的这个依赖，会覆 盖传递依赖引入的另一个依赖。
 ```
+
+```
+package readinglist;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext; import org.springframework.core.type.AnnotatedTypeMetadata;
+    public class JdbcTemplateCondition implements Condition {
+      @Override
+      public boolean matches(ConditionContext context,
+                             AnnotatedTypeMetadata metadata) {
+        try {
+          context.getClassLoader().loadClass(
+                 "org.springframework.jdbc.core.JdbcTemplate");
+          return true;
+        } catch (Exception e) {
+          return false;
+} }
+}
+当你用Java来声明Bean的时候，可以使用这个自定义条件类:
+    @Conditional(JdbcTemplateCondition.class)
+    public MyService myService() {
+... }
+在这个例子里，只有当JdbcTemplateCondition类的条件成立时才会创建MyService这个 Bean。也就是说MyService Bean创建的条件是Classpath里有JdbcTemplate。否则，这个Bean
+的声明就会被忽略掉。
+```
+
+# 自定义配置
+## 通过覆盖springboot自动配置
+## 通过属性文件处置配置
+```
+@Controller
+@RequestMapping("/")
+@ConfigurationProperties(prefix="amazon")
+public class ReadingListController {
+  private String associateId;
+  private ReadingListRepository readingListRepository;
+  @Autowired
+  public ReadingListController(
+        ReadingListRepository readingListRepository) {
+    this.readingListRepository = readingListRepository;
+}
+  public void setAssociateId(String associateId) {
+    this.associateId = associateId;
+}
+... ...
+
+application.yml
+amazon: 
+      associatedId: mh #associated_id || associated-id
+
+... ...
+```
+
+```
+代码清单3-5 在一个Bean里加载配置属性 
+package readinglist;
+    import org.springframework.boot.context.properties.
+                                       ConfigurationProperties;
+import org.springframework.stereotype.Component;
+@Component
+@ConfigurationProperties("amazon")//注入带amazon 前缀的属性
+public class AmazonProperties {
+  private String associateId;
+  public void setAssociateId(String associateId) {//associateId的 setter方法
+    this.associateId = associateId;
+}
+  public String getAssociateId() {
+    return associateId;
+} }
+```
+
+```
+@RequestMapping("/")
+public class ReadingListController {
+  private ReadingListRepository readingListRepository;
+  private AmazonProperties amazonProperties;
+  @Autowired
+  public ReadingListController(
+      ReadingListRepository readingListRepository,
+      AmazonProperties amazonProperties) {
+    this.readingListRepository = readingListRepository;
+    this.amazonProperties = amazonProperties;//注入 AmazonProperties
+}
+  @RequestMapping(method=RequestMethod.GET)
+  public String readersBooks(Reader reader, Model model) {
+    List<Book> readingList =
+        readingListRepository.findByReader(reader);
+
+ if (readingList != null) {
+model.addAttribute("books", readingList); model.addAttribute("reader", reader); model.addAttribute("amazonID", amazonProperties.getAssociateId());
+}return "readingList";
+  @RequestMapping(method=RequestMethod.POST)
+  public String addToReadingList(Reader reader, Book book) {
+    book.setReader(reader);
+    readingListRepository.save(book);
+    return "redirect:/";
+} }
+```
