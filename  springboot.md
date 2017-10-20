@@ -35,7 +35,7 @@ bogon:address_jpa hmh$ java -jar target/address_jpa-0.0.1-SNAPSHOT.jar
 
 ```
 
-# 覆盖起步依赖引入的传递依赖
+### 覆盖起步依赖引入的传递依赖
 ```
 MAVEN 排除传递性依赖
 在Maven里，可以用<exclusions>元素来排除传递依赖。下面这个引入Spring Boot的 build.gradle的<dependency>增加了<exclusions>元素去除Jackson:
@@ -81,9 +81,9 @@ import org.springframework.context.annotation.ConditionContext; import org.sprin
 的声明就会被忽略掉。
 ```
 
-# 自定义配置
-## 通过覆盖springboot自动配置
-## 通过属性文件处置配置
+## 自定义配置
+### 通过覆盖springboot自动配置
+### 通过属性文件处置配置
 ```
 @Controller
 @RequestMapping("/")
