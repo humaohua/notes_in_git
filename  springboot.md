@@ -24,6 +24,17 @@ mysql> grant select, insert, delete, update on db_example.* to 'springuser'@'loc
 $ mvn dependency:tree
 ```
 
+### run springboot app
+```
+bogon:address_jpa hmh$ pwd
+/Users/hmh/IdeaProjects/address_jpa
+
+bogon:address_jpa hmh$ mvn spring-boot:run
+
+bogon:address_jpa hmh$ java -jar target/address_jpa-0.0.1-SNAPSHOT.jar 
+
+```
+
 # 覆盖起步依赖引入的传递依赖
 ```
 MAVEN 排除传递性依赖
