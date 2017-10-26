@@ -81,6 +81,55 @@ man docker -logs
 man docker -top
 man docker -exec
 ```
+* Docker端口映射
+
+```
+$ docker run [-P 随机映射所有端口][-p 仅映射指定端口]
+* -p
+1 containerPort
+	docker run -p 80 -i -t ubuntu /bin/bash
+2 hostPort:containerPort
+	docker run -p 8080:80 -i -t ubuntu /bin/bash
+3 ip:containerPort
+	docker run -p 0.0.0.0:80 -i -t ubuntu /bin/bash
+4 ip:hostPort:containerPort
+	docker run -p 0.0.0.0:8080:80 -i -t ubuntu /bin/bash
+```
+* Nginx部署流程
+
+```
+* 创建映射80端口的交互式容器
+	docker run -p 80 --name web -i -t ubuntu /bin/bash
+* 安装Nginx
+	apt-get install -y nginx
+* 安装文本编辑器vim
+	apt-get install -y vim
+* 创建静态页面
+	mkdir -p /var/www/html
+	cd /var/www/html
+	vim index.html
+* 运行Nginx
+	whereis nginx
+	ls /etc/nginx
+	vim /etc/nginx/sites-enabled/default
+	修改 root 为 /var/www/html;
+	cd /
+	nginx
+	ps -ef
+	ctrl + p
+	docker ps
+	docker port web
+	docker top web
+* 验证网站访问
+	curl http://127.0.0.1:4317
+	docker inspect web
+	curl http://x.x.x.z
+	docker stop web
+	docker start -i web
+	ctrl + p
+	docker exec web nginx
+	停止一个容器并重新启动时,原来分配的IP及端口都会改变
+```
 
 
 
